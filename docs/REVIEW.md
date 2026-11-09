@@ -1,6 +1,6 @@
 # Assignment 2 implementation review
 
-Status: implementation organized into six commits on a2-assignment. No PR is required for the instructor repository. Task 6 evaluations remain provisional for student review.
+Status: implementation organized into six commits on a2-assignment. No PR is required for the instructor repository. Task 6 decisions are confirmed: ACCEPT, MODIFY, ACCEPT.
 
 Base: royalpriest/COMP3415-A2-Campus-Supply-Desk, main, 82ed75e0714e50c086a13ee491f51b349814d8a4.
 
@@ -52,8 +52,8 @@ Acceptance mapping:
 
 ## Task 6 and remaining review
 
-See docs/AI-RECORD.md for recommendation excerpts and proposed ACCEPT/MODIFY evaluations. These require the user's own review and technical judgment. No student approval or independent analysis has been fabricated.
+See docs/AI-RECORD.md for recommendation excerpts, confirmed ACCEPT/MODIFY/ACCEPT decisions, and supporting evidence.
 
 Before submission, review the three behavioral corrections, the menu handlers, and express pricing. Run `python -m unittest discover -s tests -v` and try `python -m supplydesk quote --customer student --fulfillment express --item hoodie:2` (expected 8400 cents). Use a separate --data path before trying placement or cancellation.
 
-The implementation was first prepared uncommitted, then reconstructed and reverified in ordered commits on user request. Original stage logs are preserved; evidence/08-commit-verification.md records the rechecks. Commit timestamps represent that reconstruction, not the earlier work. docs/Assignment2_Report.pdf summarizes Tasks 1-6; Task 6 still needs the student's own evaluation.
+The implementation was first prepared uncommitted, then reconstructed and reverified in ordered commits on user request. Original stage logs are preserved; evidence/08-commit-verification.md records the rechecks. Commit timestamps represent that reconstruction, not the earlier work. docs/Assignment2_Report.pdf summarizes Tasks 1-6; Task 6 records the student's confirmed decisions.
