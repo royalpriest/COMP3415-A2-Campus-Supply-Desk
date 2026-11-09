@@ -1,0 +1,185 @@
+test_cli_express_quote_place_and_help (tests.test_express.ExpressTests.test_cli_express_quote_place_and_help) ... usage: python -m unittest quote [-h] [--customer {regular,student}]
+                                [--fulfillment {pickup,delivery}] --item ITEM
+python -m unittest quote: error: argument --fulfillment: invalid choice: 'express' (choose from pickup, delivery)
+ERROR
+test_cr_examples_and_thresholds (tests.test_express.ExpressTests.test_cr_examples_and_thresholds) ... 
+  test_cr_examples_and_thresholds (tests.test_express.ExpressTests.test_cr_examples_and_thresholds) (customer='regular', items=[{'product_id': 'notebook', 'quantity': 2}]) ... ERROR
+  test_cr_examples_and_thresholds (tests.test_express.ExpressTests.test_cr_examples_and_thresholds) (customer='student', items=[{'product_id': 'hoodie', 'quantity': 2}]) ... ERROR
+  test_cr_examples_and_thresholds (tests.test_express.ExpressTests.test_cr_examples_and_thresholds) (customer='regular', items=[{'product_id': 'hoodie', 'quantity': 3}]) ... ERROR
+  test_cr_examples_and_thresholds (tests.test_express.ExpressTests.test_cr_examples_and_thresholds) (customer='regular', items=[{'product_id': 'notebook', 'quantity': 20}]) ... ERROR
+  test_cr_examples_and_thresholds (tests.test_express.ExpressTests.test_cr_examples_and_thresholds) (customer='student', items=[{'product_id': 'notebook', 'quantity': 10}]) ... ERROR
+test_express_half_cent_rounding_and_fee_not_discounted (tests.test_express.ExpressTests.test_express_half_cent_rounding_and_fee_not_discounted) ... ERROR
+test_express_lifecycle_preserves_snapshots_and_numbering (tests.test_express.ExpressTests.test_express_lifecycle_preserves_snapshots_and_numbering) ... ERROR
+test_express_validation_and_atomicity (tests.test_express.ExpressTests.test_express_validation_and_atomicity) ... ok
+test_menu_express_quote_and_placement (tests.test_express.ExpressTests.test_menu_express_quote_and_placement) ... FAIL
+
+======================================================================
+ERROR: test_cli_express_quote_place_and_help (tests.test_express.ExpressTests.test_cli_express_quote_place_and_help)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/argparse.py", line 1943, in _parse_known_args2
+    namespace, args = self._parse_known_args(args, namespace, intermixed)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/argparse.py", line 2184, in _parse_known_args
+    start_index = consume_optional(start_index)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/argparse.py", line 2113, in consume_optional
+    take_action(action, args, option_string)
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/argparse.py", line 2003, in take_action
+    argument_values = self._get_values(action, argument_strings)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/argparse.py", line 2514, in _get_values
+    self._check_value(action, value)
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/argparse.py", line 2573, in _check_value
+    raise ArgumentError(action, msg % args)
+argparse.ArgumentError: argument --fulfillment: invalid choice: 'express' (choose from pickup, delivery)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/workspace/scratch/1ee76c6949a5/campus-supply-review/tests/test_express.py", line 87, in test_cli_express_quote_place_and_help
+    code = main(['--data', str(self.path), command, '--customer', 'student', '--fulfillment', 'express', '--item', 'hoodie:2'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/1ee76c6949a5/campus-supply-review/supplydesk/cli.py", line 45, in main
+    args = parser.parse_args(argv)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/argparse.py", line 1904, in parse_args
+    args, argv = self.parse_known_args(args, namespace)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/argparse.py", line 1914, in parse_known_args
+    return self._parse_known_args2(args, namespace, intermixed=False)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/argparse.py", line 1943, in _parse_known_args2
+    namespace, args = self._parse_known_args(args, namespace, intermixed)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/argparse.py", line 2165, in _parse_known_args
+    positionals_end_index = consume_positionals(start_index)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/argparse.py", line 2141, in consume_positionals
+    take_action(action, args)
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/argparse.py", line 2018, in take_action
+    action(self, namespace, argument_values, option_string)
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/argparse.py", line 1272, in __call__
+    subnamespace, arg_strings = parser.parse_known_args(arg_strings, None)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/argparse.py", line 1914, in parse_known_args
+    return self._parse_known_args2(args, namespace, intermixed=False)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/argparse.py", line 1945, in _parse_known_args2
+    self.error(str(err))
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/argparse.py", line 2650, in error
+    self.exit(2, _('%(prog)s: error: %(message)s\n') % args)
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/argparse.py", line 2637, in exit
+    _sys.exit(status)
+SystemExit: 2
+
+======================================================================
+ERROR: test_cr_examples_and_thresholds (tests.test_express.ExpressTests.test_cr_examples_and_thresholds) (customer='regular', items=[{'product_id': 'notebook', 'quantity': 2}])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/1ee76c6949a5/campus-supply-review/tests/test_express.py", line 28, in test_cr_examples_and_thresholds
+    quote = self.service.quote(customer, items, 'express')
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/1ee76c6949a5/campus-supply-review/supplydesk/service.py", line 23, in quote
+    return self._prepare_request(self.store.load(), customer_type, items, fulfillment)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/1ee76c6949a5/campus-supply-review/supplydesk/service.py", line 29, in _prepare_request
+    raise ValueError("Fulfillment must be pickup or delivery.")
+ValueError: Fulfillment must be pickup or delivery.
+
+======================================================================
+ERROR: test_cr_examples_and_thresholds (tests.test_express.ExpressTests.test_cr_examples_and_thresholds) (customer='student', items=[{'product_id': 'hoodie', 'quantity': 2}])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/1ee76c6949a5/campus-supply-review/tests/test_express.py", line 28, in test_cr_examples_and_thresholds
+    quote = self.service.quote(customer, items, 'express')
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/1ee76c6949a5/campus-supply-review/supplydesk/service.py", line 23, in quote
+    return self._prepare_request(self.store.load(), customer_type, items, fulfillment)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/1ee76c6949a5/campus-supply-review/supplydesk/service.py", line 29, in _prepare_request
+    raise ValueError("Fulfillment must be pickup or delivery.")
+ValueError: Fulfillment must be pickup or delivery.
+
+======================================================================
+ERROR: test_cr_examples_and_thresholds (tests.test_express.ExpressTests.test_cr_examples_and_thresholds) (customer='regular', items=[{'product_id': 'hoodie', 'quantity': 3}])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/1ee76c6949a5/campus-supply-review/tests/test_express.py", line 28, in test_cr_examples_and_thresholds
+    quote = self.service.quote(customer, items, 'express')
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/1ee76c6949a5/campus-supply-review/supplydesk/service.py", line 23, in quote
+    return self._prepare_request(self.store.load(), customer_type, items, fulfillment)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/1ee76c6949a5/campus-supply-review/supplydesk/service.py", line 29, in _prepare_request
+    raise ValueError("Fulfillment must be pickup or delivery.")
+ValueError: Fulfillment must be pickup or delivery.
+
+======================================================================
+ERROR: test_cr_examples_and_thresholds (tests.test_express.ExpressTests.test_cr_examples_and_thresholds) (customer='regular', items=[{'product_id': 'notebook', 'quantity': 20}])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/1ee76c6949a5/campus-supply-review/tests/test_express.py", line 28, in test_cr_examples_and_thresholds
+    quote = self.service.quote(customer, items, 'express')
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/1ee76c6949a5/campus-supply-review/supplydesk/service.py", line 23, in quote
+    return self._prepare_request(self.store.load(), customer_type, items, fulfillment)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/1ee76c6949a5/campus-supply-review/supplydesk/service.py", line 29, in _prepare_request
+    raise ValueError("Fulfillment must be pickup or delivery.")
+ValueError: Fulfillment must be pickup or delivery.
+
+======================================================================
+ERROR: test_cr_examples_and_thresholds (tests.test_express.ExpressTests.test_cr_examples_and_thresholds) (customer='student', items=[{'product_id': 'notebook', 'quantity': 10}])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/1ee76c6949a5/campus-supply-review/tests/test_express.py", line 28, in test_cr_examples_and_thresholds
+    quote = self.service.quote(customer, items, 'express')
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/1ee76c6949a5/campus-supply-review/supplydesk/service.py", line 23, in quote
+    return self._prepare_request(self.store.load(), customer_type, items, fulfillment)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/1ee76c6949a5/campus-supply-review/supplydesk/service.py", line 29, in _prepare_request
+    raise ValueError("Fulfillment must be pickup or delivery.")
+ValueError: Fulfillment must be pickup or delivery.
+
+======================================================================
+ERROR: test_express_half_cent_rounding_and_fee_not_discounted (tests.test_express.ExpressTests.test_express_half_cent_rounding_and_fee_not_discounted)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/1ee76c6949a5/campus-supply-review/tests/test_express.py", line 41, in test_express_half_cent_rounding_and_fee_not_discounted
+    quote = self.service.quote('student', [item(quantity=1)], 'express')
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/1ee76c6949a5/campus-supply-review/supplydesk/service.py", line 23, in quote
+    return self._prepare_request(self.store.load(), customer_type, items, fulfillment)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/1ee76c6949a5/campus-supply-review/supplydesk/service.py", line 29, in _prepare_request
+    raise ValueError("Fulfillment must be pickup or delivery.")
+ValueError: Fulfillment must be pickup or delivery.
+
+======================================================================
+ERROR: test_express_lifecycle_preserves_snapshots_and_numbering (tests.test_express.ExpressTests.test_express_lifecycle_preserves_snapshots_and_numbering)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/1ee76c6949a5/campus-supply-review/tests/test_express.py", line 48, in test_express_lifecycle_preserves_snapshots_and_numbering
+    quote = self.service.quote('student', [item('hoodie', 2)], 'express')
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/1ee76c6949a5/campus-supply-review/supplydesk/service.py", line 23, in quote
+    return self._prepare_request(self.store.load(), customer_type, items, fulfillment)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/1ee76c6949a5/campus-supply-review/supplydesk/service.py", line 29, in _prepare_request
+    raise ValueError("Fulfillment must be pickup or delivery.")
+ValueError: Fulfillment must be pickup or delivery.
+
+======================================================================
+FAIL: test_menu_express_quote_and_placement (tests.test_express.ExpressTests.test_menu_express_quote_and_placement)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/1ee76c6949a5/campus-supply-review/tests/test_express.py", line 110, in test_menu_express_quote_and_placement
+    self.assertTrue(any('pickup/delivery/express' in call.args[0] for call in prompts.call_args_list))
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.012s
+
+FAILED (failures=1, errors=8)
