@@ -98,12 +98,12 @@ python -m unittest discover -s tests -v
 The supplied tests should finish with:
 
 ```text
-Ran 4 tests
+Ran 28 tests
 
 OK
 ```
 
-These four tests are a starting point. **Passing them does not mean every required behavior is correct.** You will add meaningful tests as part of the assignment.
+The starter includes four smoke tests. The expanded suite adds service, menu, CLI, and CR-01 acceptance tests. See `evidence/` for the original baseline, known failures, refactoring results, defect fixes, and final results.
 
 The supplied tests use temporary files and do not change your saved orders or stock.
 
@@ -214,3 +214,23 @@ These commands use the same orders and stock as the interactive menu opened with
 python -m supplydesk --help
 python -m supplydesk quote --help
 ```
+
+## Express delivery (CR-01)
+
+Fulfillment choices are `pickup`, `delivery`, and `express`. Pickup remains the default and is free. Standard delivery costs $6 CAD and is free at $100 of merchandise after discount. Express always costs $12 CAD, with no fee waiver. Eligible students receive 10% off merchandise only, starting at $50, using integer half-up rounding.
+
+```sh
+python -m supplydesk quote --customer student --fulfillment express --item hoodie:2
+python -m supplydesk --data .supplydesk/practice.json place --fulfillment express --item notebook:2
+```
+
+The first example totals 8,400 cents ($84 CAD). Express is also available in the menu's fulfillment prompt. Placement and cancellation still need menu confirmation. Orders retain their original fulfillment, prices, discount, delivery fee and total after reopening or cancellation.
+
+## Assignment review materials
+
+- `docs/REVIEW.md`: implementation summary and review checklist.
+- `docs/CR-01-prediction.md`: impact prediction recorded before express implementation.
+- `docs/AI-RECORD.md`: actual AI recommendations and provisional technical evaluations for user review.
+- `evidence/`: real test output from each implementation stage; early failures are intentionally retained.
+
+No external packages are needed. Run all checks with `python -m unittest discover -s tests -v`.

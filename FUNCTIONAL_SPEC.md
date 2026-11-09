@@ -57,7 +57,7 @@ place_order(customer_type, items, fulfillment="pickup")
 Both operations require:
 
 - Customer type: exactly `regular` or `student`.
-- Fulfillment: exactly `pickup` or `delivery`.
+- Fulfillment: exactly `pickup`, `delivery`, or `express`.
 - Items: a nonempty list of dictionaries, each containing `product_id` and `quantity`.
 - A valid product ID for every item.
 - An integer quantity from 1 through 99 inclusive for each item. Booleans, fractional numbers, and numeric strings are not valid quantities when calling the service directly.
@@ -170,3 +170,12 @@ Menu behavior:
 - Exit when the user chooses `0`, reaches the end of input, or presses `Ctrl+C`.
 
 Individual commands retain their documented JSON output and exit statuses. Unlike the menu, individual placement and cancellation commands act immediately without asking for confirmation.
+
+
+## CR-01 amendment: express delivery
+
+The service API, individual commands and menu accept `express` alongside `pickup` and `delivery`. Express costs exactly 1,200 cents on every request, even above the free-standard-delivery threshold. Discounts apply only to merchandise; their eligibility and half-up rounding rules remain unchanged. Existing pickup and standard delivery rules and defaults continue to apply. Other fulfillment values are invalid.
+
+Express quotes and placements use the same pricing. Original fulfillment, items, discount, delivery fee and total persist through lookup, history, reopening and cancellation. Stock, validation, numbering and idempotent cancellation rules continue to apply.
+
+Examples: two notebooks, regular express = 2,200 cents; two hoodies, student express = 8,400 cents; three hoodies, regular express = 13,200 cents (standard delivery = 12,000 cents).
