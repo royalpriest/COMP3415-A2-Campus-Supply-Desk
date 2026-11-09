@@ -1,0 +1,64 @@
+test_cli_defaults_and_rejected_input (test_interfaces.InterfaceTests.test_cli_defaults_and_rejected_input) ... ok
+test_menu_declined_placement_and_defaults (test_interfaces.InterfaceTests.test_menu_declined_placement_and_defaults) ... ok
+test_menu_eof_and_interrupt_exit (test_interfaces.InterfaceTests.test_menu_eof_and_interrupt_exit) ... ok
+test_menu_operations_and_declined_cancellation (test_interfaces.InterfaceTests.test_menu_operations_and_declined_cancellation) ... ok
+test_menu_recovers_from_bad_input (test_interfaces.InterfaceTests.test_menu_recovers_from_bad_input) ... ok
+test_all_available_stock_can_be_ordered (test_service.ServiceTests.test_all_available_stock_can_be_ordered) ... ok
+test_duplicate_lines_over_stock_are_rejected_atomically (test_service.ServiceTests.test_duplicate_lines_over_stock_are_rejected_atomically) ... 
+  test_duplicate_lines_over_stock_are_rejected_atomically (test_service.ServiceTests.test_duplicate_lines_over_stock_are_rejected_atomically) (operation='quote') ... FAIL
+  test_duplicate_lines_over_stock_are_rejected_atomically (test_service.ServiceTests.test_duplicate_lines_over_stock_are_rejected_atomically) (operation='place_order') ... FAIL
+test_half_cent_rounds_up_using_integer_money (test_service.ServiceTests.test_half_cent_rounds_up_using_integer_money) ... ok
+test_history_numbering_and_price_snapshot_survive_reopening (test_service.ServiceTests.test_history_numbering_and_price_snapshot_survive_reopening) ... ok
+test_invalid_requests_leave_existing_saved_data_unchanged (test_service.ServiceTests.test_invalid_requests_leave_existing_saved_data_unchanged) ... ok
+test_malformed_save_is_not_silently_reset (test_service.ServiceTests.test_malformed_save_is_not_silently_reset) ... ok
+test_quantity_99_with_sufficient_stock (test_service.ServiceTests.test_quantity_99_with_sufficient_stock) ... ok
+test_quote_matches_order_and_has_no_side_effects (test_service.ServiceTests.test_quote_matches_order_and_has_no_side_effects) ... ok
+test_repeated_cancellation_does_not_restore_stock_twice (test_service.ServiceTests.test_repeated_cancellation_does_not_restore_stock_twice) ... FAIL
+test_standard_delivery_threshold (test_service.ServiceTests.test_standard_delivery_threshold) ... ok
+test_student_threshold (test_service.ServiceTests.test_student_threshold) ... 
+  test_student_threshold (test_service.ServiceTests.test_student_threshold) (quantity=10) ... FAIL
+test_unknown_order_does_not_change_data (test_service.ServiceTests.test_unknown_order_does_not_change_data) ... ok
+test_valid_duplicate_lines_preserve_lines_and_restore_stock (test_service.ServiceTests.test_valid_duplicate_lines_preserve_lines_and_restore_stock) ... ok
+test_cancel_order_restores_stock (test_smoke.OrderSmokeTests.test_cancel_order_restores_stock) ... ok
+test_order_can_be_reopened (test_smoke.OrderSmokeTests.test_order_can_be_reopened) ... ok
+test_regular_pickup_quote (test_smoke.OrderSmokeTests.test_regular_pickup_quote) ... ok
+test_student_delivery_quote (test_smoke.OrderSmokeTests.test_student_delivery_quote) ... ok
+
+======================================================================
+FAIL: test_duplicate_lines_over_stock_are_rejected_atomically (test_service.ServiceTests.test_duplicate_lines_over_stock_are_rejected_atomically) (operation='quote')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/1ee76c6949a5/campus-supply-review/tests/test_service.py", line 90, in test_duplicate_lines_over_stock_are_rejected_atomically
+    with self.assertRaises(ValueError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_duplicate_lines_over_stock_are_rejected_atomically (test_service.ServiceTests.test_duplicate_lines_over_stock_are_rejected_atomically) (operation='place_order')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/1ee76c6949a5/campus-supply-review/tests/test_service.py", line 90, in test_duplicate_lines_over_stock_are_rejected_atomically
+    with self.assertRaises(ValueError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_repeated_cancellation_does_not_restore_stock_twice (test_service.ServiceTests.test_repeated_cancellation_does_not_restore_stock_twice)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/1ee76c6949a5/campus-supply-review/tests/test_service.py", line 107, in test_repeated_cancellation_does_not_restore_stock_twice
+    self.assertEqual(self.path.read_bytes(), before)
+AssertionError: b'{\n[177 chars]k": 22\n    },\n    {\n      "product_id": "pe[967 chars]n}\n' != b'{\n[177 chars]k": 20\n    },\n    {\n      "product_id": "pe[967 chars]n}\n'
+
+======================================================================
+FAIL: test_student_threshold (test_service.ServiceTests.test_student_threshold) (quantity=10)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/1ee76c6949a5/campus-supply-review/tests/test_service.py", line 38, in test_student_threshold
+    self.assertEqual(quote['discount_cents'], discount)
+AssertionError: 0 != 500
+
+----------------------------------------------------------------------
+Ran 22 tests in 0.024s
+
+FAILED (failures=4)
