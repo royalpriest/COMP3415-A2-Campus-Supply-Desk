@@ -1,0 +1,154 @@
+COMMAND: python -m supplydesk --data <temporary-state> quote --customer student --fulfillment express --item hoodie:2
+
+{
+  "customer_type": "student",
+  "fulfillment": "express",
+  "items": [
+    {
+      "product_id": "hoodie",
+      "name": "Campus hoodie",
+      "unit_price_cents": 4000,
+      "quantity": 2,
+      "line_total_cents": 8000
+    }
+  ],
+  "subtotal_cents": 8000,
+  "discount_cents": 800,
+  "delivery_cents": 1200,
+  "total_cents": 8400
+}
+
+COMMAND: python -m supplydesk --data <temporary-state> place --customer student --fulfillment express --item hoodie:2
+
+{
+  "order_id": "ORD-0001",
+  "status": "placed",
+  "customer_type": "student",
+  "fulfillment": "express",
+  "items": [
+    {
+      "product_id": "hoodie",
+      "name": "Campus hoodie",
+      "unit_price_cents": 4000,
+      "quantity": 2,
+      "line_total_cents": 8000
+    }
+  ],
+  "subtotal_cents": 8000,
+  "discount_cents": 800,
+  "delivery_cents": 1200,
+  "total_cents": 8400
+}
+
+COMMAND: python -m supplydesk --data <temporary-state> show ORD-0001
+
+{
+  "order_id": "ORD-0001",
+  "status": "placed",
+  "customer_type": "student",
+  "fulfillment": "express",
+  "items": [
+    {
+      "product_id": "hoodie",
+      "name": "Campus hoodie",
+      "unit_price_cents": 4000,
+      "quantity": 2,
+      "line_total_cents": 8000
+    }
+  ],
+  "subtotal_cents": 8000,
+  "discount_cents": 800,
+  "delivery_cents": 1200,
+  "total_cents": 8400
+}
+
+COMMAND: python -m supplydesk --data <temporary-state> cancel ORD-0001
+
+{
+  "order_id": "ORD-0001",
+  "status": "cancelled",
+  "customer_type": "student",
+  "fulfillment": "express",
+  "items": [
+    {
+      "product_id": "hoodie",
+      "name": "Campus hoodie",
+      "unit_price_cents": 4000,
+      "quantity": 2,
+      "line_total_cents": 8000
+    }
+  ],
+  "subtotal_cents": 8000,
+  "discount_cents": 800,
+  "delivery_cents": 1200,
+  "total_cents": 8400
+}
+
+COMMAND: python -m supplydesk --data <temporary-state> cancel ORD-0001
+
+{
+  "order_id": "ORD-0001",
+  "status": "cancelled",
+  "customer_type": "student",
+  "fulfillment": "express",
+  "items": [
+    {
+      "product_id": "hoodie",
+      "name": "Campus hoodie",
+      "unit_price_cents": 4000,
+      "quantity": 2,
+      "line_total_cents": 8000
+    }
+  ],
+  "subtotal_cents": 8000,
+  "discount_cents": 800,
+  "delivery_cents": 1200,
+  "total_cents": 8400
+}
+
+COMMAND: python -m supplydesk --data <temporary-state> place --fulfillment overnight --item notebook:2
+
+usage: __main__.py place [-h] [--customer {regular,student}]
+                         [--fulfillment {pickup,delivery,express}] --item ITEM
+__main__.py place: error: argument --fulfillment: invalid choice: 'overnight' (choose from pickup, delivery, express)
+
+INTERACTIVE QUOTE: regular, notebook x2, express
+
+Campus Supply Desk | All prices are CAD. Orders are saved automatically.
+
+1. View products and stock
+2. Get a quote
+3. Place an order
+4. View order history
+5. Find an order
+6. Cancel an order
+0. Exit
+Choose an option: 
+Product ID       Name                     Price     Stock
+notebook         Notebook                    $5.00       20
+pen-pack         Pen pack                    $7.50       10
+hoodie           Campus hoodie              $40.00        5
+mug              Campus mug                 $15.00        8
+bag              Canvas bag                 $25.00        4
+Enter product IDs from the table. Blank product ID finishes the item list.
+Customer type [regular/student] (Enter = regular): Product ID (Enter = finish): Quantity: Product ID (Enter = finish): Fulfillment [pickup/delivery/express] (Enter = pickup; express = $12 CAD): 
+Quote - not placed
+Customer: regular | Fulfillment: express
+  Notebook x 2: $10.00
+Subtotal: $10.00
+Discount: $0.00
+Delivery: $12.00
+Total: $22.00
+Quote only: no stock reserved and no order created.
+
+1. View products and stock
+2. Get a quote
+3. Place an order
+4. View order history
+5. Find an order
+6. Cancel an order
+0. Exit
+Choose an option: Goodbye.
+
+
+PASS: separate-process quote/place/reopen/cancel, rejected command, and interactive quote.

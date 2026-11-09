@@ -1,0 +1,214 @@
+diff --git a/supplydesk/menu.py b/supplydesk/menu.py
+index 35b9832..eb261dc 100644
+--- a/supplydesk/menu.py
++++ b/supplydesk/menu.py
+@@ -1,4 +1,4 @@
+-﻿"""Interactive terminal adapter; business rules remain in OrderService."""
++"""Interactive terminal adapter; business rules remain in OrderService."""
+ 
+ 
+ def money(cents):
+@@ -42,7 +42,49 @@ def read_request(service):
+     return customer, items, fulfillment
+ 
+ 
++def handle_catalog(service):
++    show_catalog(service.catalog())
++
++
++def handle_quote(service):
++    show_order(service.quote(*read_request(service)))
++    print("Quote only: no stock reserved and no order created.")
++
++
++def handle_place(service):
++    request = read_request(service)
++    show_order(service.quote(*request))
++    if input("Place this order? [y/N]: ").strip().lower() == "y":
++        show_order(service.place_order(*request))
++    else:
++        print("Order not placed.")
++
++
++def handle_history(service):
++    orders = service.list_orders()
++    if not orders:
++        print("No orders yet.")
++    for order in orders:
++        show_order(order)
++
++
++def handle_lookup(service):
++    show_order(service.get_order(input("Order ID: ").strip()))
++
++
++def handle_cancel(service):
++    order_id = input("Order ID to cancel: ").strip()
++    if input("Cancel this order? [y/N]: ").strip().lower() == "y":
++        show_order(service.cancel_order(order_id))
++    else:
++        print("Cancellation abandoned.")
++
++
+ def run_menu(service):
++    handlers = {
++        "1": handle_catalog, "2": handle_quote, "3": handle_place,
++        "4": handle_history, "5": handle_lookup, "6": handle_cancel,
++    }
+     print("Campus Supply Desk | All prices are CAD. Orders are saved automatically.")
+     while True:
+         try:
+@@ -52,35 +94,11 @@ def run_menu(service):
+             if choice == "0":
+                 print("Goodbye.")
+                 return 0
+-            if choice == "1":
+-                show_catalog(service.catalog())
+-            elif choice in ("2", "3"):
+-                request = read_request(service)
+-                if choice == "2":
+-                    show_order(service.quote(*request))
+-                    print("Quote only: no stock reserved and no order created.")
+-                else:
+-                    show_order(service.quote(*request))
+-                    if input("Place this order? [y/N]: ").strip().lower() == "y":
+-                        show_order(service.place_order(*request))
+-                    else:
+-                        print("Order not placed.")
+-            elif choice == "4":
+-                orders = service.list_orders()
+-                if not orders:
+-                    print("No orders yet.")
+-                for order in orders:
+-                    show_order(order)
+-            elif choice == "5":
+-                show_order(service.get_order(input("Order ID: ").strip()))
+-            elif choice == "6":
+-                order_id = input("Order ID to cancel: ").strip()
+-                if input("Cancel this order? [y/N]: ").strip().lower() == "y":
+-                    show_order(service.cancel_order(order_id))
+-                else:
+-                    print("Cancellation abandoned.")
+-            else:
++            handler = handlers.get(choice)
++            if handler is None:
+                 print("Choose a number from 0 to 6.")
++            else:
++                handler(service)
+         except (EOFError, KeyboardInterrupt):
+             print("\nGoodbye.")
+             return 0
+diff --git a/supplydesk/service.py b/supplydesk/service.py
+index da37ccc..3624df7 100644
+--- a/supplydesk/service.py
++++ b/supplydesk/service.py
+@@ -3,6 +3,15 @@
+ from supplydesk.storage import JsonStore
+ 
+ 
++MAX_ITEM_QUANTITY = 99
++STUDENT_DISCOUNT_THRESHOLD_CENTS = 5000
++STUDENT_DISCOUNT_PERCENT = 10
++PERCENT_DENOMINATOR = 100
++HALF_PERCENT_DENOMINATOR = 50
++FREE_DELIVERY_THRESHOLD_CENTS = 10000
++STANDARD_DELIVERY_FEE_CENTS = 600
++
++
+ class OrderService:
+     def __init__(self, state_path=".supplydesk/state.json"):
+         self.store = JsonStore(state_path)
+@@ -11,7 +20,9 @@ class OrderService:
+         return self.store.load()["catalog"]
+ 
+     def quote(self, customer_type, items, fulfillment="pickup"):
+-        state = self.store.load()
++        return self._prepare_request(self.store.load(), customer_type, items, fulfillment)
++
++    def _prepare_request(self, state, customer_type, items, fulfillment):
+         if customer_type not in ("regular", "student"):
+             raise ValueError("Customer type must be regular or student.")
+         if fulfillment not in ("pickup", "delivery"):
+@@ -31,7 +42,7 @@ class OrderService:
+             if product is None:
+                 raise ValueError("Unknown product.")
+             quantity = item.get("quantity")
+-            if type(quantity) is not int or quantity < 1 or quantity > 99:
++            if type(quantity) is not int or quantity < 1 or quantity > MAX_ITEM_QUANTITY:
+                 raise ValueError("Quantity must be an integer from 1 to 99.")
+             if quantity > product["stock"]:
+                 raise ValueError("Not enough stock for " + product["product_id"] + ".")
+@@ -45,11 +56,11 @@ class OrderService:
+                 "line_total_cents": line_total,
+             })
+         discount = 0
+-        if customer_type == "student" and subtotal > 5000:
+-            discount = (subtotal * 10 + 50) // 100
++        if customer_type == "student" and subtotal > STUDENT_DISCOUNT_THRESHOLD_CENTS:
++            discount = (subtotal * STUDENT_DISCOUNT_PERCENT + HALF_PERCENT_DENOMINATOR) // PERCENT_DENOMINATOR
+         delivery = 0
+-        if fulfillment == "delivery" and subtotal - discount < 10000:
+-            delivery = 600
++        if fulfillment == "delivery" and subtotal - discount < FREE_DELIVERY_THRESHOLD_CENTS:
++            delivery = STANDARD_DELIVERY_FEE_CENTS
+         return {
+             "customer_type": customer_type,
+             "fulfillment": fulfillment,
+@@ -62,54 +73,12 @@ class OrderService:
+ 
+     def place_order(self, customer_type, items, fulfillment="pickup"):
+         state = self.store.load()
+-        if customer_type not in ("regular", "student"):
+-            raise ValueError("Customer type must be regular or student.")
+-        if fulfillment not in ("pickup", "delivery"):
+-            raise ValueError("Fulfillment must be pickup or delivery.")
+-        if not isinstance(items, list) or not items:
+-            raise ValueError("An order must contain at least one item.")
+-        lines = []
+-        subtotal = 0
+-        for item in items:
+-            if not isinstance(item, dict):
+-                raise ValueError("Each item must contain a product_id and quantity.")
+-            product = None
+-            for candidate in state["catalog"]:
+-                if candidate["product_id"] == item.get("product_id"):
+-                    product = candidate
+-                    break
+-            if product is None:
+-                raise ValueError("Unknown product.")
+-            quantity = item.get("quantity")
+-            if type(quantity) is not int or quantity < 1 or quantity > 99:
+-                raise ValueError("Quantity must be an integer from 1 to 99.")
+-            if quantity > product["stock"]:
+-                raise ValueError("Not enough stock for " + product["product_id"] + ".")
+-            line_total = product["unit_price_cents"] * quantity
+-            subtotal += line_total
+-            lines.append({
+-                "product_id": product["product_id"],
+-                "name": product["name"],
+-                "unit_price_cents": product["unit_price_cents"],
+-                "quantity": quantity,
+-                "line_total_cents": line_total,
+-            })
+-        discount = 0
+-        if customer_type == "student" and subtotal > 5000:
+-            discount = (subtotal * 10 + 50) // 100
+-        delivery = 0
+-        if fulfillment == "delivery" and subtotal - discount < 10000:
+-            delivery = 600
++        prepared = self._prepare_request(state, customer_type, items, fulfillment)
++        lines = prepared["items"]
+         order = {
+             "order_id": "ORD-" + str(state["next_order_number"]).zfill(4),
+             "status": "placed",
+-            "customer_type": customer_type,
+-            "fulfillment": fulfillment,
+-            "items": lines,
+-            "subtotal_cents": subtotal,
+-            "discount_cents": discount,
+-            "delivery_cents": delivery,
+-            "total_cents": subtotal - discount + delivery,
++            **prepared,
+         }
+         for line in lines:
+             for product in state["catalog"]:
